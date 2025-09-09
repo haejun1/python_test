@@ -155,11 +155,12 @@
 #     print(f"{prime}은 소수가 아닙니다")
 
 #10. 피보나치 수열 구하기
-num = int(input("피보나치 값을 입력하시오 : "))
-plist = []
-for i in range(num):
-    if i < 2:
-        plist.append(i)
-    else:
-        plist.append(plist[i-1] + plist[i-2])
-print(f"피보나치 수열 : {plist}")
+# num = int(input("피보나치 값을 입력하시오 : "))
+# plist = []
+# for i in range(num):
+#     if i < 2:
+#         plist.append(i)
+#     else:
+#         plist.append(plist[i-1] + plist[i-2])
+# print(f"피보나치 수열 : {plist}")
+#ㅜㅜ
