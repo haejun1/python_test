@@ -57,6 +57,4 @@ highest = max(scores)
 
 print(f"평균점수는 {average:.2f}")
 print(f"최고점수는 {highest}")
-=======
-hi
->>>>>>> 05f10dc2ac010e7e19eee76ae0e7cd07de0e595c
+
