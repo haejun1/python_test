@@ -127,19 +127,6 @@
 """"
 >> 루트써서 pri없애면
 """
-# prime = int(input("숫자를 입력하시오 : "))
-# isPrime = True
-# if prime < 2:
-#     isPrime = False
-# else:
-#     for i in range(2, int(prime**0.5) + 1):  # √n까지만 검사
-#         if prime % i == 0:
-#             isPrime = False
-#             break
-# if isPrime:
-#     print(f"{prime}은 소수입니다")
-# else:
-#     print(f"{prime}은 소수가 아닙니다")
 # isPrime = True
 # prime = int(input("숫자를 입력하시오 : "))
 # if prime < 2:
@@ -165,13 +152,26 @@
 # print(f"피보나치 수열 : {plist}")
 
 #11. 단어 빈도수 세기(dict)
-txtC = "apple banna apple orange apple banna"
-freq =  {}
-for word in txtC.split():
-    if word in freq:
-        freq[word] += 1
-    else:
-        freq[word] = 1
-print(freq)
-print(f"apple 갯수는 {freq["apple"]}")
-print(f"apple 갯수는 {freq.get("apple")}")
+# txtC = "apple banna apple orange apple banna"
+# freq =  {}
+# for word in txtC.split():
+#     if word in freq:
+#         freq[word] += 1
+#     else:
+#         freq[word] = 1
+# print(freq)
+# print(f"apple 갯수는 {freq["apple"]}")
+# print(f"apple 갯수는 {freq.get("apple")}")
+
+#12. 소인수분해
+soinsu = int(input("소인수 분해 할 숫자를 입력하시오 : "))
+solist = []
+if soinsu > 1:
+    i = 2
+    while i <= soinsu:
+        if soinsu % i == 0:
+            solist.append(i)
+            soinsu = soinsu / i
+        else:
+            i += 1
+print(solist)
