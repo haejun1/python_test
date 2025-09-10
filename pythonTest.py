@@ -163,4 +163,15 @@
 #     else:
 #         plist.append(plist[i-1] + plist[i-2])
 # print(f"피보나치 수열 : {plist}")
-#ㅜㅜ
+
+#11. 단어 빈도수 세기(dict)
+txtC = "apple banna apple orange apple banna"
+freq =  {}
+for word in txtC.split():
+    if word in freq:
+        freq[word] += 1
+    else:
+        freq[word] = 1
+print(freq)
+print(f"apple 갯수는 {freq["apple"]}")
+print(f"apple 갯수는 {freq.get("apple")}")
