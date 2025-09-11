@@ -26,6 +26,15 @@
 #     reverse.append(text[len(text)-i-1])
 # reverse_text = ", ".join(map(str, reverse))
 # print(f"뒤집힌 문자열은 {reverse_text}입니다")
+"""
+>> map()함수는 리스트,튜플 등에 쓰임
+>> 반복문 없이 처리가 가능
+>> .map(함수, 리스트 등)으로 사용
+"""
+#map 예제
+# words = ["apple", "banana", "kiwi"]
+# lengths = list(map(len, words))
+# print(lengths)  # [5, 6, 4]
 
 #5. 1부터 N까지 합 구하기
 # num = int(input("숫자를 입력하시오 : "))
@@ -164,14 +173,61 @@
 # print(f"apple 갯수는 {freq.get("apple")}")
 
 #12. 소인수분해
-soinsu = int(input("소인수 분해 할 숫자를 입력하시오 : "))
-solist = []
-if soinsu > 1:
-    i = 2
-    while i <= soinsu:
-        if soinsu % i == 0:
-            solist.append(i)
-            soinsu = soinsu / i
-        else:
-            i += 1
-print(solist)
+# soinsu = int(input("소인수 분해 할 숫자를 입력하시오 : "))
+# solist = []
+# if soinsu > 1:
+#     i = 2
+#     while i <= soinsu:
+#         if soinsu % i == 0:
+#             solist.append(i)
+#             soinsu = soinsu / i
+#         else:
+#             i += 1
+# print(solist)
+
+#13. 팰린드롬 문장 판별(공백, 대소문자 무시)
+# isPal = input("팰린드롬 판별할 문장 입력해봐 : ")
+# isPal = isPal.lower()
+# isPal = isPal.replace(" ","")
+# if isPal == isPal[::-1]:
+#     print(f"{isPal}은 palindrome입니다")
+# else:
+#     print(f"{isPal}은 palindrome이 아닙니다")
+"""
+>> .lower() 함수와 .replace("뭐를", "뭐로") 기억하자
+"""
+
+#14. 아나그램 판별하기(sorted)
+# str1 = "해준백멋지다"
+# str2 = "지다멋준해백"
+# if sorted(str1) == sorted(str2):
+#     print(f"{str1}과 {str2}는 아나그램입니다.")
+# else:
+#     print(f"{str1}과 {str2}는 아나그램이 아닙니다.")
+
+#15. 2차원 리스트 90도 회전
+# twodim = [
+#     [1,2,3],
+#     [4,5,6],
+#     [7,8,9]
+#     ]
+# rtwodim = []
+# for i in range(len(twodim)):
+#     for j in range(len(twodim[1])):
+#         rtwodim.append(twodim[-j-1][i])
+# print(rtwodim)
+"""
+>> 계속 append쓰니깐 1차원이 되어버림 한줄마다 리스트써서 넣어주려면 리스트 하나더 필요
+"""
+# twodim = [
+#     [1,2,3],
+#     [4,5,6],
+#     [7,8,9]
+#     ]
+# rtwodim = []
+# for i in range(len(twodim)):
+#     row=[]
+#     for j in range(len(twodim[1])):
+#         row.append(twodim[-j-1][i])
+#     rtwodim.append(row)
+# print(rtwodim)
