@@ -111,34 +111,114 @@
 # dfs('A')
 
 #1-6. DFS 반복함수(3) / 2차원 그리드 (1은 땅, 0은 바다일 때 섬의 갯수는?)
-grid = [
-    [1,1,0,0],
-    [1,0,0,1],
-    [0,0,1,1],
-    [0,0,0,0]
+# grid = [
+#     [1,1,0,0],
+#     [1,0,0,1],
+#     [0,0,1,1],
+#     [0,0,0,0]
+# ]
+# N, M = len(grid), len(grid[0])
+# visited = [[False]*M for _ in range(N)]
+# dx = [1, -1, 0, 0]
+# dy = [0, 0, 1, -1]
+# def dfs(x, y):
+#     stack = [(x,y)]
+#     while stack:
+#         cx, cy = stack.pop()
+#         if not visited[cx][cy]: #이 좌표가 FALSE였으면 TRUE로 만들겠다
+#             visited[cx][cy] = True
+#             for i in range(4):
+#                 nx, ny = cx + dx[i], cy + dy[i]
+#                 if 0 <= nx < N and 0 <= ny < M:
+#                     if grid[nx][ny] == 1 and not visited[nx][ny]:
+#                         stack.append((nx, ny))
+# count = 0      # 전체 그리드 돌면서 섬 개수 세기
+# for i in range(N):
+#     for j in range(M):
+#         if grid[i][j] == 1 and not visited[i][j]:
+#             dfs(i, j)
+#             count += 1
+# print(f"섬 개수: {count}")
+
+#2-0-1 큐 숙달하기(1)
+# from collections import deque
+# visitor = 5
+# queue = deque(range(1,visitor+1))
+# while queue:
+#     customer = queue.popleft()
+#     print(customer, end=' ')
+#     isNew = input("\n새 손님이 왔으면 Y 아니면 N: ")
+#     if isNew == 'Y':
+#         visitor +=1
+#         customer = queue.append(visitor)
+
+#2-0-2 큐 숙달하기(2) / 
+    # 환자가 줄을 서있고 우선도가 높은 환자가 
+    # 뒤에 서있음 맨 앞 환자를 뒤로 보냄
+    # 아니면 치료
+# patients = [2,1,3,2] #각 환자 우선도(클수록 우선도 큼)
+# from collections import deque
+# queue = deque(patients) #괄호안에 들어가는 순서대로 큐리스트가 만들어짐
+# print("치료 순서: ", end=' ')
+# while queue:
+#     recover = queue.popleft()
+#     if recover >= max(queue, default=0):
+#         print(recover, end=' ')
+#     else:
+#         queue.append(recover)
+
+
+#2-1 BFS문제 
+# from collections import deque  #que를 사용하기 위한 라이브러리
+# def bfs(graph, node, visited):
+#     queue = deque([node]) #라이브러리 사용
+#     visited[node] = True #현재노드 방문처리
+#     while queue: #queue에 아무것도 없을때까지
+#         v = queue.popleft() #FIFO, 삽입된 순서대로 노드 꺼내기
+#         print(v, end=' ')
+#         for i in graph[v]:
+#             if not (visited[i]):
+#                 queue.append(i)
+#                 visited[i] = True
+# graph = [
+#     [],#0
+#     [2, 3],#1
+#     [1, 8],#2
+#     [1, 4, 5],#3
+#     [3, 5],#4
+#     [3, 4],#5
+#     [7, 8],#6
+#     [6, 8],#7
+#     [2, 6, 7]#8
+# ]
+# visited = [False]*9
+# bfs(graph,1,visited)
+
+#2-2 BFS문제 : 최단 거리 미로 찾기 #1이 길
+maze = [
+    [1, 0, 1, 1],
+    [1, 1, 1, 0],
+    [0, 1, 0, 1],
+    [1, 1, 1, 1]
 ]
-N, M = len(grid), len(grid[0])
+from collections import deque
+N = len(maze)
+M = len(maze[0])
 visited = [[False]*M for _ in range(N)]
-dx = [1, -1, 0, 0]
-dy = [0, 0, 1, -1]
-def dfs(x, y):
-    stack = [(x,y)]
-    while stack:
-        cx, cy = stack.pop()
-        if not visited[cx][cy]: #이 좌표가 FALSE였으면 TRUE로 만들겠다
-            visited[cx][cy] = True
-            for i in range(4):
-                nx, ny = cx + dx[i], cy + dy[i]
-                if 0 <= nx < N and 0 <= ny < M:
-                    if grid[nx][ny] == 1 and not visited[nx][ny]:
-                        stack.append((nx, ny))
-
-# 전체 그리드 돌면서 섬 개수 세기
-count = 0
-for i in range(N):
-    for j in range(M):
-        if grid[i][j] == 1 and not visited[i][j]:
-            dfs(i, j)
-            count += 1
-
-print(f"섬 개수: {count}")
+queue = deque()
+queue.append((0,0,1))
+visited[0][0]=True
+dx = [-1,1,0,0] #상,하,좌,우
+dy = [0,0,-1,1]
+while queue:
+    x,y,distance = queue.popleft()
+    if x == N-1 and y == M-1:
+        print("최단거리 : ", distance)
+        break
+    for i in range(N):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        if 0 <= nx < N and 0 <= ny < M:  # 미로 범위 안
+            if maze[nx][ny] == 1 and not visited[nx][ny]:
+                visited[nx][ny] = True
+                queue.append((nx, ny, distance+1))
