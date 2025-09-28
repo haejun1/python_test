@@ -226,34 +226,64 @@
 #2-3 BFS문제 : 토마토 익히기 / 1 = 익음, 0 = 안익음, -1 = 빈칸
     #하루가 지나면 익은 토마토의 상하좌우 토마토가 익음
     #다 익을 때까지 최소날짜 구하기 / 다 안익으면 -1출력
+# from collections import deque
+# box = [
+#     [0, -1, 1, 0, 0],
+#     [0, 0, -1, 0, 0],
+#     [-1, 0, 0, 1, 0],
+#     [0, 0, 0, 0, 0]
+# ]
+# N = len(box)
+# M = len(box[0])
+# queue = deque()
+# for i in range(N):
+#     for j in range(M):
+#         if box[i][j] == 1:
+#             queue.append((i,j,0)) #(행,열,날짜)
+# dx = [-1,1,0,0]
+# dy = [0,0,-1,1]
+# days = 0
+# while queue:
+#     x,y,d = queue.popleft()
+#     days = max(days,d)
+#     for i in range(4):
+#         nx,ny = x + dx[i], y + dy[i]
+#         if 0 <= nx < N and 0 <= ny < M:
+#             if box[nx][ny] == 0:
+#                 box[nx][ny] = 1
+#                 queue.append((nx,ny,d+1))
+# for row in box:
+#     if 0 in row:
+#         days = -1
+#         break
+# print("최소날짜 : ", days)
+
+#3-1 위상정렬 : 과목순서 정하기
 from collections import deque
-box = [
-    [0, -1, 1, 0, 0],
-    [0, 0, -1, 0, 0],
-    [-1, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0]
-]
-N = len(box)
-M = len(box[0])
+graph = { #정점에 연결된 점들
+    1 : [2,5],
+    2 : [3],
+    3 : [],
+    4 : [5],
+    5 : []
+}
+indegree = { #초기 진입차수 / 0이면 시작 및 큐에 넣는다
+    1:0,
+    2:1,
+    3:1,
+    4:0,
+    5:2
+}
 queue = deque()
-for i in range(N):
-    for j in range(M):
-        if box[i][j] == 1:
-            queue.append((i,j,0)) #(행,열,날짜)
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-days = 0
+for node in indegree:
+    if indegree[node] == 0:
+        queue.append(node)
+result = []
 while queue:
-    x,y,d = queue.popleft()
-    days = max(days,d)
-    for i in range(4):
-        nx,ny = x + dx[i], y + dy[i]
-        if 0 <= nx < N and 0 <= ny < M:
-            if box[nx][ny] == 0:
-                box[nx][ny] = 1
-                queue.append((nx,ny,d+1))
-for row in box:
-    if 0 in row:
-        days = -1
-        break
-print("최소날짜 : ", days)
+    node = queue.popleft()
+    result.append(node)
+    for nxt in graph[node]:
+        indegree[nxt] -= 1
+        if indegree[nxt] == 0:
+            queue.append(nxt)
+print("가능한 과목 순서 : ", result)
