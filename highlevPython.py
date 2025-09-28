@@ -195,30 +195,65 @@
 # bfs(graph,1,visited)
 
 #2-2 BFS문제 : 최단 거리 미로 찾기 #1이 길
-maze = [
-    [1, 0, 1, 1],
-    [1, 1, 1, 0],
-    [0, 1, 0, 1],
-    [1, 1, 1, 1]
-]
+# maze = [
+#     [1, 0, 1, 1],
+#     [1, 1, 1, 0],
+#     [0, 1, 0, 1],
+#     [1, 1, 1, 1]
+# ]
+# from collections import deque
+# N = len(maze)
+# M = len(maze[0])
+# visited = [[False]*M for _ in range(N)]
+# queue = deque()
+# queue.append((0,0,1))
+# visited[0][0]=True
+# dx = [-1,1,0,0] #상,하,좌,우
+# dy = [0,0,-1,1]
+# while queue:
+#     x,y,distance = queue.popleft()
+#     if x == N-1 and y == M-1:
+#         print("최단거리 : ", distance)
+#         break
+#     for i in range(N):
+#         nx = x + dx[i]
+#         ny = y + dy[i]
+#         if 0 <= nx < N and 0 <= ny < M:  # 미로 범위 안
+#             if maze[nx][ny] == 1 and not visited[nx][ny]:
+#                 visited[nx][ny] = True
+#                 queue.append((nx, ny, distance+1))
+
+#2-3 BFS문제 : 토마토 익히기 / 1 = 익음, 0 = 안익음, -1 = 빈칸
+    #하루가 지나면 익은 토마토의 상하좌우 토마토가 익음
+    #다 익을 때까지 최소날짜 구하기 / 다 안익으면 -1출력
 from collections import deque
-N = len(maze)
-M = len(maze[0])
-visited = [[False]*M for _ in range(N)]
+box = [
+    [0, -1, 1, 0, 0],
+    [0, 0, -1, 0, 0],
+    [-1, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0]
+]
+N = len(box)
+M = len(box[0])
 queue = deque()
-queue.append((0,0,1))
-visited[0][0]=True
-dx = [-1,1,0,0] #상,하,좌,우
+for i in range(N):
+    for j in range(M):
+        if box[i][j] == 1:
+            queue.append((i,j,0)) #(행,열,날짜)
+dx = [-1,1,0,0]
 dy = [0,0,-1,1]
+days = 0
 while queue:
-    x,y,distance = queue.popleft()
-    if x == N-1 and y == M-1:
-        print("최단거리 : ", distance)
+    x,y,d = queue.popleft()
+    days = max(days,d)
+    for i in range(4):
+        nx,ny = x + dx[i], y + dy[i]
+        if 0 <= nx < N and 0 <= ny < M:
+            if box[nx][ny] == 0:
+                box[nx][ny] = 1
+                queue.append((nx,ny,d+1))
+for row in box:
+    if 0 in row:
+        days = -1
         break
-    for i in range(N):
-        nx = x + dx[i]
-        ny = y + dy[i]
-        if 0 <= nx < N and 0 <= ny < M:  # 미로 범위 안
-            if maze[nx][ny] == 1 and not visited[nx][ny]:
-                visited[nx][ny] = True
-                queue.append((nx, ny, distance+1))
+print("최소날짜 : ", days)
