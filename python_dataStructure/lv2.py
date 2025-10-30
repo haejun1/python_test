@@ -1,13 +1,13 @@
-# """
-# stack
-# - LIFO, append(), pop()
-# queue
-# - FIFO, deque
-# 연결리스트(Linked List)
-# - 노드, 포인터
-# Hash Table
-# - 충돌 해결, 키 해싱
-# """
+"""
+stack
+- LIFO, append(), pop()
+queue
+- FIFO, deque
+연결리스트(Linked List)
+- 노드, 포인터
+Hash Table
+- 충돌 해결, 키 해싱
+"""
 
 # #1. stack문제------------------------------------------------------------------------------------------------
 #     #1) pop, push
@@ -149,3 +149,41 @@
 # deque()
 # enqueue(70)
 # show_queue()
+
+#3. linked list문제------------------------------------------------------------------------------------------------
+#     #1) 단일 연결 리스트 (단방향 이동)
+# class Node:
+#     def __init__(self,data):
+#         self.data = data
+#         self.next = None
+
+# def delete_node(head, value):
+#     if head.data == value: #헤드가 삭제 대상이면 
+#         return head.next #다음 대상을 헤드로 바꾸고(삭제하고) 나감
+    
+#     current = head #시작은 다 헤드에서 시작 (탐색도 O(1))
+#     while current.next:
+#         if current.next.data == value: #마침내 현재값의 다음값이 목표값일때(2)
+#             current.next = current.next.next #앞에서 2개뒤를 이어 다음값인 목표값 삭제(3)
+#             return head
+#         current = current.next #현재값을 하나씩 뒤로 옮기면서 (1)
+#     return head
+
+# node1 = Node(1)
+# node2 = Node(2)
+# node3 = Node(3)
+# node4 = Node(4)
+# node5 = Node(5)
+# node1.next = node2
+# node2.next = node3
+# node3.next = node4
+# node4.next = node5
+
+# head = delete_node(node1, 4)
+# while head:
+#     print(head.data, ">", end=" ")
+#     head = head.next
+
+    #2) 이중 연결 리스트 (양방향 이동)
+
+    #3) 원형 연결 리스트 (순환의 구조)
