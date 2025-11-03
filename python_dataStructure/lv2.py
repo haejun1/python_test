@@ -1,13 +1,13 @@
-"""
-stack
-- LIFO, append(), pop()
-queue
-- FIFO, deque
-연결리스트(Linked List)
-- 노드, 포인터
-Hash Table
-- 충돌 해결, 키 해싱
-"""
+# """
+# stack
+# - LIFO, append(), pop()
+# queue
+# - FIFO, deque
+# 연결리스트(Linked List)
+# - 노드, 포인터
+# Hash Table
+# - 충돌 해결, 키 해싱
+# """
 
 # #1. stack문제------------------------------------------------------------------------------------------------
 #     #1) pop, push
@@ -61,8 +61,8 @@ Hash Table
 #         if stc5:
 #             print("pop된 값: ", st5.pop())
 # print("남은스택 ", st5)
-#
-#2. queue문제------------------------------------------------------------------------------------------------
+
+# #2. queue문제------------------------------------------------------------------------------------------------
 # from collections import deque
 #     #1) queue 입출력 확인하기
 # q1 = ["enqueue 10", "enqueue 20", "dequeue", "enqueue 30", "enqueue 40", "dequeue"]
@@ -150,7 +150,7 @@ Hash Table
 # enqueue(70)
 # show_queue()
 
-#3. linked list문제------------------------------------------------------------------------------------------------
+# #3. linked list문제------------------------------------------------------------------------------------------------
 #     #1) 단일 연결 리스트 (단방향 이동)
 # class Node:
 #     def __init__(self,data):
@@ -184,6 +184,120 @@ Hash Table
 #     print(head.data, ">", end=" ")
 #     head = head.next
 
-    #2) 이중 연결 리스트 (양방향 이동)
+#    #2) 이중 연결 리스트 (양방향 이동)
+# class Node:
+#     def __init__(self,data):
+#         self.data = data
+#         self.prev = None
+#         self.next = None
 
-    #3) 원형 연결 리스트 (순환의 구조)
+# def delete_node(head, value):
+#     if head.data == value: 
+#         return head.next 
+#     current = head 
+#     while current.next:
+#         if current.next.data == value: 
+#             current.next = current.next.next
+#             current.next.prev = current
+#             return head
+#         current = current.next 
+#     return head
+
+# def insert_node(head,target,value):
+#     current = head
+#     new_node = Node(value) #value는 인수 상태, Node로 바꿔 사용해주어야 한다
+#     while current.next:
+#         if current.data == target:
+#             if current.next == None:
+#                 current.next = new_node
+#                 new_node.prev = current
+#                 return head
+#             origin_next = current.next
+#             current.next = new_node
+#             new_node.prev = current
+#             new_node.next = origin_next
+#             origin_next.prev = new_node
+#             return head
+#         current = current.next
+#     return head
+
+# node1 = Node(10)
+# node2 = Node(20)
+# node3 = Node(30)
+# node1.next = node2
+# node2.next = node3
+# node3.prev = node2
+# node2.prev = node1
+
+# head = insert_node(node1, 20, 25)
+# while head:
+#     print(head.data, ">", end=" ")
+#     head = head.next
+
+#    #3) 원형 연결 리스트 (순환의 구조)
+# class Node:
+#     def __init__(self,data):
+#         self.data = data
+#         self.prev = None
+#         self.next = None
+
+# def delete_node(head, value):
+#     if head.data == value: 
+#         head.prev.next = head.next
+#         head.next.prev = head.prev
+#         return head.next
+#     elif head.next == None and head.prev == None:
+#         return None
+#     current = head 
+#     while current.next:
+#         if current.next.data == value: 
+#             current.next = current.next.next
+#             current.next.prev = current
+#             return head
+#         current = current.next 
+#         if current == head:
+#             break
+#     return head
+
+# def insert_node(head,target,value):
+#     current = head
+#     origin_head = head
+#     new_node = Node(value) #value는 인수 상태, Node로 바꿔 사용해주어야 한다
+#     while current.next:
+#         if current.data == target:
+#             if current.next == None:
+#                 current.next = new_node
+#                 new_node.prev = current
+#                 return head
+#             origin_next = current.next
+#             current.next = new_node
+#             new_node.prev = current
+#             new_node.next = origin_next
+#             origin_next.prev = new_node
+#             return head
+#         current = current.next
+#         if current == origin_head:
+#             return head
+#     return head
+
+# node1 = Node(10)
+# node2 = Node(20)
+# node3 = Node(30)
+# node4 = Node(40)
+# node1.next = node2
+# node2.next = node3
+# node3.next = node4
+# node4.next = node1
+# node4.prev = node3
+# node3.prev = node2
+# node2.prev = node1
+# node1.prev = node4
+
+# head = delete_node(node1, 30)
+# current = head
+# while True:
+#     print(current.data, ">", end=" ")
+#     current = current.next
+#     if current == head:
+#         print(f"(다시 {head.data})")
+#         break
