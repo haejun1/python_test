@@ -153,16 +153,109 @@
 # print()
 # print(topological_sort(graph))
 
-#4 최소신장트리 ------------------------------------------------------------
-    #4-1 Kruskal (Union-Find)
-        # 가중치가 작은 간선부터 선택함
-        # 사이클 유뮤 체크를 위해 Union-Find를 사용
-        #1. 간선을 가중치 기준으로 오름차순 정렬
-        #2. 간선이 연결한 두 정점이 같은 집합인지 확인
-            # 이미 연결되어 있으면 하나의 그룹 상태ex) (1,2) (3,4)
-            # -> 추가로 연결하면 사이클이 생기니 안된다
-        #3. 다른 그룹끼리는 Union 가능 ex) (1,2)-(3,4)
+# #4 최소신장트리(MST) ------------------------------------------------------------
+#     #4-1 Kruskal (Union-Find)
+#         # 가중치가 작은 간선부터 선택함
+#         # 사이클 유뮤 체크를 위해 Union-Find를 사용
+#         #1. 간선을 가중치 기준으로 오름차순 정렬
+#         #2. 간선이 연결한 두 정점이 같은 집합인지 확인
+#             # 이미 연결되어 있으면 하나의 그룹 상태ex) (1,2) (3,4)
+#             # -> 추가로 연결하면 사이클이 생기니 안된다
+#         #3. 다른 그룹끼리는 Union 가능 ex) (1,2)-(3,4)
+
+# class UnionFind:
+#     def __init__(self, n): #n은 정점 개수
+#         self.parent = list(range(n+1)) #parent, 초기엔 자기 자신을 부모로 가짐
+#                                         #연결을 통해 그룹 상태가 되면 첫 정점이 parent가 됨
+#         self.rank = [0] * (n+1) #각 집합의 높이를 뜻함
+#                                 #집합끼리 Union했을 때 높은 랭크 밑으로 들어감
+    
+#     def find(self, x):
+#         if self.parent[x] != x: #독립 노드가 아니면
+#             self.parent[x] = self.find(self.parent[x])
+#         return self.parent[x]
+    
+#     def union(self, a, b):
+#         ra, rb = self.find(a), self.find(b) #부모 찾고
+#         if ra == rb: #같은 그룹이면 합치면 안되니깐 False
+#             return False
+        
+#         if self.rank[ra] < self.rank[rb]: # 높은 rank밑으로 들어감
+#             self.parent[ra] = rb
+#         elif self.rank[ra] > self.rank[rb]:
+#             self.parent[rb] = ra
+#         else: #둘이 높이 같으면 그냥 ra가 큰걸로 ㅎ
+#             self.parent[rb] = ra 
+#             self.rank[ra] += 1
+#         return True
+
+# def kruskal(edges, n):
+#     edges.sort(key=lambda x:x[2]) #(u,v,w) 중 w를 기준으로 정렬하겠다
+#     uf = UnionFind(n)
+
+#     mst = []
+#     total_weight = 0
+
+#     for u,v,w in edges:
+#         if uf.union(u,v):
+#             mst.append((u,v,w))
+#             total_weight += w
+
+#     return mst, total_weight
+
+# edges = [
+#     (1, 2, 1),
+#     (1, 3, 3),
+#     (2, 4, 2),
+#     (3, 4, 4),
+# ]
+
+# mst, total = kruskal(edges, 4)
+# print("MST:", mst)
+# print("Total Weight:", total)
+
     #4-2 Prim
+        #가장 싼 비용으로 확장해 가는 방식
+        # 1. 아무 시작 노드를 고름
+        # 2. 그 노드 중 가장 가중치가 작은 것을 선택 -> 반복
+            # ex) a에서의 간선이 2개 였고 가중치가 작은 b를 택함
+            # ex) a-c와 b-d중 가중치가 작은 걸 선택
+            # => 새로 연결된 노드도 후보로 올라 그중 작은 걸 선택하는 방식
+
+import heapq #우선순위가 가장작은 요소를 꺼내주는 Heap 라이브러리
+from collections import defaultdict
+
+def prim(graph, start=1):
+    visited = set()
+    pq = []
+    total_cost = 0
+
+    # start에서 뻗는 간선들을 넣기
+    visited.add(start)
+    for nxt, w in graph[start]:
+        heapq.heappush(pq, (w, start, nxt))
+
+    mst = []
+
+    while pq:
+        w, u, v = heapq.heappop(pq)
+
+        # 이미 방문한 노드면 skip
+        if v in visited:
+            continue
+
+        visited.add(v)
+        mst.append((u, v, w))
+        total_cost += w
+
+        # 새로 들어온 v에서 뻗는 간선들 추가
+        for nxt, w2 in graph[v]:
+            if nxt not in visited:
+                heapq.heappush(pq, (w2, v, nxt))
+
+    return mst, total_cost
+
+
 #5 최단경로 알고리즘 ------------------------------------------------------------
     #5-1 Dijkstra
     #5-2 Bellman-Ford
