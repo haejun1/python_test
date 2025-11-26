@@ -214,49 +214,166 @@
 # print("MST:", mst)
 # print("Total Weight:", total)
 
-    #4-2 Prim
-        #가장 싼 비용으로 확장해 가는 방식
-        # 1. 아무 시작 노드를 고름
-        # 2. 그 노드 중 가장 가중치가 작은 것을 선택 -> 반복
-            # ex) a에서의 간선이 2개 였고 가중치가 작은 b를 택함
-            # ex) a-c와 b-d중 가중치가 작은 걸 선택
-            # => 새로 연결된 노드도 후보로 올라 그중 작은 걸 선택하는 방식
+#     #4-2 Prim
+#         #가장 싼 비용으로 확장해 가는 방식
+#         # 1. 아무 시작 노드를 고름
+#         # 2. 그 노드 중 가장 가중치가 작은 것을 선택 -> 반복
+#             # ex) a에서의 간선이 2개 였고 가중치가 작은 b를 택함
+#             # ex) a-c와 b-d중 가중치가 작은 걸 선택
+#             # => 새로 연결된 노드도 후보로 올라 그중 작은 걸 선택하는 방식
 
-import heapq #우선순위가 가장작은 요소를 꺼내주는 Heap 라이브러리
-from collections import defaultdict
+# import heapq 
+# #우선순위가 가장작은 요소를 꺼내주는 Heap 라이브러리
+# # 우선순위 큐 = Heap
+# from collections import defaultdict
 
-def prim(graph, start=1):
-    visited = set()
-    pq = []
-    total_cost = 0
+# def prim(graph, start=1):
+#     visited = set()
+#     pq = []
+#     total_cost = 0
 
-    # start에서 뻗는 간선들을 넣기
-    visited.add(start)
-    for nxt, w in graph[start]:
-        heapq.heappush(pq, (w, start, nxt))
+#     # start에서 뻗는 간선들을 넣기
+#     visited.add(start)
+#     for nxt, w in graph[start]:
+#         heapq.heappush(pq, (w, start, nxt))
 
-    mst = []
+#     mst = []
 
-    while pq:
-        w, u, v = heapq.heappop(pq)
+#     while pq:
+#         w, u, v = heapq.heappop(pq)
 
-        # 이미 방문한 노드면 skip
-        if v in visited:
-            continue
+#         # 이미 방문한 노드면 skip
+#         if v in visited:
+#             continue
 
-        visited.add(v)
-        mst.append((u, v, w))
-        total_cost += w
+#         visited.add(v)
+#         mst.append((u, v, w))
+#         total_cost += w
 
-        # 새로 들어온 v에서 뻗는 간선들 추가
-        for nxt, w2 in graph[v]:
-            if nxt not in visited:
-                heapq.heappush(pq, (w2, v, nxt))
+#         # 새로 들어온 v에서 뻗는 간선들 추가
+#         for nxt, w2 in graph[v]:
+#             if nxt not in visited:
+#                 heapq.heappush(pq, (w2, v, nxt))
 
-    return mst, total_cost
+#     return mst, total_cost
 
 
-#5 최단경로 알고리즘 ------------------------------------------------------------
-    #5-1 Dijkstra
-    #5-2 Bellman-Ford
+# #5 최단경로 알고리즘 ------------------------------------------------------------
+#     #5-1 Dijkstra
+#         # 하나의 정점에서 다른 모든 정점까지의 최소비용(거리)
+#         # 최단거리는 "항상" 작은 비용을 먼저 선택 => Heap사용
+#         # 양수 가중치만 계산 가능 (음수 포함시 Bellman-Ford 사용 필요)
+
+# import heapq
+# from collections import defaultdict
+
+# def dijkstra(start, graph):
+#     INF = float('inf') #infinity 무한대를 뜻하는 특수한 실수 값
+#     dist = {node: INF for node in graph} #distance, 각 노드의 초기 거리를 무한대로 설정
+#     dist[start] = 0 # 시작은 0
+
+#     pq = [(0,start)] #(거리,노드)를 저장함
+
+#     while pq:
+#         cur_dist, node = heapq.heappop(pq) #힙에서 pop하는 방식
+
+#         #거리가 더 멀면 최소거리가 아니므로 무시
+#         if cur_dist > dist[node]:
+#             continue
+
+#         for nxt, weight in graph[node]:
+#             new_dist = cur_dist + weight
+
+#             if new_dist < dist[nxt]:
+#                 dist[nxt] = new_dist
+#                 heapq.heappush(pq, (new_dist, nxt))
+
+#     return dist
+
+# graph = defaultdict(list)
+# graph[1] = [(2, 1), (3, 4)]
+# graph[2] = [(4, 2)]
+# graph[3] = [(4, 1)]
+# graph[4] = []
+
+#     #5-2 Bellman-Ford
+#         # 다익스트라에서 음수 간선까지 처리하는 알고리즘
+#         # 음수 찾는 법
+#             # 모든 간선을 N-1번 반복하여 최단거리를 갱신 (287줄 참고)
+#             # N번째 반복에도 값이 줄어든다면? ==> 음수 간선 존재
+
+# def bellman_ford(graph, start, n):
+#     INF = float('inf')
+#     dist = {node: INF for node in graph}
+#     dist[start] = 0
+
+#     for _ in range(n-1):
+#         for u in graph:
+#             # 전 정점+가중치가 현 노드보다 작으면 최단거리 갱신
+#             for v, w in graph[u]:
+#                 if dist[u] + w < dist[v]:
+#                     dist[v] = dist[u] + w 
+            
+#     # 모든 간선을 갱신했는데도 더 작은 값이 나온다는 건 음수 간선이 존재한다는 것
+#     for u in graph:
+#         for v,w in graph[u]:
+#             if dist[u] + w < dist[v]:
+#                 return "Negative cycle detected!"
+    
+#     return dist
+
+# n = 4
+# graph = {
+#     1: [(2, 4), (3, 1)],
+#     2: [(4, 2)],
+#     3: [(2, -2), (4, 5)],
+#     4: []
+# }
+
+# result = bellman_ford(graph, 1, n)
+# print(result)
+
+
     #5-3 Floyd-Warshall
+        #모든 정점 간 쌍방향 최단거리
+        #방향/무방향/양수/음수 모두 가능
+        #DP동적프로그래밍 기반으로 작동
+            #dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+def floyd_warshall(graph, n):
+    INF = float('inf')
+
+    #거리 행렬 초기화
+        #dist[i][j] = i노드에서 j노드까지의 현재 최단거리
+    #(n+1) * (n+1) 행렬을 초기화 하고 시작하는 것
+    dist = [[INF] * (n+1) for _ in range(n+1)]
+
+    for i in range(1, n+1):
+        dist[i][i] = 0
+
+    #간선 반영
+    for u in graph:
+        for v,w in graph[u]:
+            dist[u][v] = w
+
+    #floyd_warshall
+    for k in range(1, n+1):
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    
+    return dist
+
+graph = {
+    1: [(2, 4), (3, 1)],
+    2: [(4, 2)],
+    3: [(2, 2), (4, 5)],
+    4: []
+}
+
+n = 4
+dist = floyd_warshall(graph, n)
+
+for row in dist[1:]:
+    print(row[1:])
